@@ -1,0 +1,9 @@
+{
+  "Name": "Frugal Farm Menu",
+  "Author": "jeffgillean",
+  "Version": "1.0.0",
+  "Description": "Frugal Farm Menu",
+  "UniqueID": "jeffgillean.FrugalFarmMenu",
+  "EntryDll": "FrugalFarmMenu.dll",
+  "UpdateKeys": []
+}
