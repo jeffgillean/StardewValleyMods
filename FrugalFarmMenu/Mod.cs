@@ -1,5 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,29 @@ namespace FrugalFarmMenu
     {
         public override void Entry(IModHelper iModHelper)
         {
-            iModHelper.Events.Display.MenuChanged += OnMenuChanged;
+            iModHelper.Events.Display.RenderingActiveMenu += OnRenderingActiveMenu;
         }
 
         private void OnMenuChanged(object sender, MenuChangedEventArgs menuChangedEventArgs)
         {
+            if (menuChangedEventArgs.NewMenu is null)
+            {
+                Helper.Events.Display.MenuChanged -= OnMenuChanged;
+                Helper.Events.Display.RenderingActiveMenu += OnRenderingActiveMenu;
+            }
+        }
+
+        private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs renderedActiveMenuEventArgs)
+        {
+            Helper.Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
+            Helper.Events.Display.MenuChanged += OnMenuChanged;
+        }
+
+        private void OnRenderingActiveMenu(object sender, RenderingActiveMenuEventArgs renderingActiveMenuEventArgs)
+        {
             try
             {
-                if (menuChangedEventArgs.NewMenu is GameMenu gameMenu)
+                if (Game1.activeClickableMenu is GameMenu gameMenu)
                 {
                     ReplaceAll(
                         gameMenu.pages,
@@ -29,6 +45,9 @@ namespace FrugalFarmMenu
             {
                 Monitor.Log($"Failed to replace Inventory Page:\n{ex}", LogLevel.Error);
             }
+
+            Helper.Events.Display.RenderingActiveMenu -= OnRenderingActiveMenu;
+            Helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
         }
 
         private static void ReplaceAll<T>(List<T> list, Predicate<T> match, Func<T, T> map)

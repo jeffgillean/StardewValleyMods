@@ -23,7 +23,7 @@ namespace FrugalFarmMenu
 		public InventoryPage(StardewModdingAPI.Mod mod, int xPositionOnScreen, int yPositionOnScreen, int width, int height) : base(xPositionOnScreen, yPositionOnScreen, width, height)
 		{
 			this.mod = mod;
-			
+
 			hoverAmountField = mod.Helper.Reflection.GetField<int>(this, "hoverAmount");
 			hoveredItemField = mod.Helper.Reflection.GetField<Item>(this, "hoveredItem");
 			hoverTextField = mod.Helper.Reflection.GetField<string>(this, "hoverText");
@@ -102,17 +102,18 @@ namespace FrugalFarmMenu
 
 		protected virtual void DrawFarmer(SpriteBatch spriteBatch)
 		{
-			Texture2D bg = Game1.timeOfDay >= 1900 ? Game1.nightbg : Game1.daybg;
-			Color color = Game1.timeOfDay >= 1900 ? Color.DarkBlue * 0.3f : Color.White;
+			Texture2D background = Game1.timeOfDay >= 1900 ? Game1.nightbg : Game1.daybg;
+			Color shadowColor = Game1.timeOfDay >= 1900 ? Color.DarkBlue * 0.3f : Color.Transparent;
 
-			spriteBatch.Draw(bg, new Vector2(xPositionOnScreen + 192 - 64 - 8, yPositionOnScreen + borderWidth + spaceToClearTopBorder + 256 - 8), Color.White);
+			spriteBatch.Draw(background, new Vector2(xPositionOnScreen + 192 - 64 - 8, yPositionOnScreen + borderWidth + spaceToClearTopBorder + 256 - 8), Color.White);
 
 			FarmerRenderer.isDrawingForUI = true;
 
 			int frame = Game1.player.bathingClothes.Value ? 108 : 0;
 			int height = Game1.player.bathingClothes.Value ? 576 : 0;
 
-			Game1.player.FarmerRenderer.draw(spriteBatch, new FarmerSprite.AnimationFrame(0, frame, secondaryArm: false, flip: false), frame, new Rectangle(0, height, 16, 32), new Vector2(xPositionOnScreen + 192 - 8 - 32, yPositionOnScreen + borderWidth + spaceToClearTopBorder + 320 - 32 - 8), Vector2.Zero, 0.8f, 2, color, 0f, 1f, Game1.player);
+			Game1.player.FarmerRenderer.draw(spriteBatch, new FarmerSprite.AnimationFrame(0, frame, secondaryArm: false, flip: false), frame, new Rectangle(0, height, 16, 32), new Vector2(xPositionOnScreen + 192 - 8 - 32, yPositionOnScreen + borderWidth + spaceToClearTopBorder + 320 - 32 - 8), Vector2.Zero, 0.8f, 2, Color.White, 0f, 1f, Game1.player);
+			Game1.player.FarmerRenderer.draw(spriteBatch, new FarmerSprite.AnimationFrame(0, frame, secondaryArm: false, flip: false), frame, new Rectangle(0, height, 16, 32), new Vector2(xPositionOnScreen + 192 - 8 - 32, yPositionOnScreen + borderWidth + spaceToClearTopBorder + 320 - 32 - 8), Vector2.Zero, 0.8f, 2, shadowColor, 0f, 1f, Game1.player);
 
 			FarmerRenderer.isDrawingForUI = false;
 
@@ -214,9 +215,9 @@ namespace FrugalFarmMenu
 		}
 
 		protected float GetTrashCanLidRotation()
-        {
+		{
 			return trashCanLidRotationField.GetValue();
-        }
+		}
 
 		private static void DrawEquipmentTile(SpriteBatch spriteBatch, ClickableComponent equipmentIcon, Item item, int tile)
 		{

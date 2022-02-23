@@ -1,9 +1,10 @@
 {
   "Name": "Frugal Farm Menu",
   "Author": "jeffgillean",
-  "Version": "1.0.0",
-  "Description": "Frugal Farm Menu",
+  "Version": "1.1.0",
+  "Description": "Focus on your penny-pinching, not your money-making.",
   "UniqueID": "jeffgillean.FrugalFarmMenu",
   "EntryDll": "FrugalFarmMenu.dll",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": []
 }
